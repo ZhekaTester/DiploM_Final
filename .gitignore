@@ -212,6 +212,6 @@ build/
 dist/
 *.egg-info/
 
-# Config files
+# config files
 *.env
 *.secret
