@@ -85,6 +85,9 @@ def test_change_city_to_spb(driver):
                 cookie_btn = WebDriverWait(driver, 5).until(
                     EC.element_to_be_clickable((By.XPATH, '//button[contains(., "Принять куки")]')))
                 cookie_btn.click()
+                # Ожидаем исчезновение куки-баннера
+                WebDriverWait(driver, 5).until(
+                    EC.invisibility_of_element_located((By.XPATH, '//button[contains(., "Принять куки")]')))
             except Exception as e:
                 allure.attach(driver.get_screenshot_as_png(),
                               name="cookie_button_not_found",
@@ -95,6 +98,9 @@ def test_change_city_to_spb(driver):
             city_btn = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, '//div[contains(text(), "Изменить город")]')))
             city_btn.click()
+            # Ожидаем появление попапа выбора города
+            WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[placeholder*="город"]')))
             allure.attach(driver.get_screenshot_as_png(),
                           name="city_popup_opened",
                           attachment_type=allure.attachment_type.PNG)
@@ -104,6 +110,10 @@ def test_change_city_to_spb(driver):
                 EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[placeholder*="город"]')))
             search_input.clear()
             search_input.send_keys(TestData.SPB_CITY)
+            # Ожидаем появление результатов поиска
+            WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located(
+                    (By.XPATH, '//li[contains(@class, "city-list-item") and contains(., "Санкт-Петербург")]')))
             allure.attach(driver.get_screenshot_as_png(),
                           name="city_search_entered",
                           attachment_type=allure.attachment_type.PNG)
@@ -113,23 +123,28 @@ def test_change_city_to_spb(driver):
                 EC.element_to_be_clickable(
                     (By.XPATH, '//li[contains(@class, "city-list-item") and contains(., "Санкт-Петербург")]')))
             city_option.click()
-            time.sleep(3)  # Увеличили время ожидания
+            # Ожидаем обновление информации о городе
+            WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located(
+                    (By.XPATH, '//button[@class="header-location" and contains(text(), "Санкт-Петербург")]')))
             allure.attach(driver.get_screenshot_as_png(),
                           name="city_selected",
                           attachment_type=allure.attachment_type.PNG)
 
         with allure.step("6. Проверить отображение нового города"):
-
             locator = (By.XPATH, '//button[@class="header-location" and contains(text(), "Санкт-Петербург")]')
-
             city_button = WebDriverWait(driver, 10).until(
                 EC.visibility_of_element_located(locator)
             )
-
             allure.attach(driver.get_screenshot_as_png(),
                           name="city_button_found",
                           attachment_type=allure.attachment_type.PNG)
 
+    except Exception as e:
+        allure.attach(driver.get_screenshot_as_png(),
+                      name="city_verification_failed",
+                      attachment_type=allure.attachment_type.PNG)
+        raise e
 
     except Exception as e:
         allure.attach(driver.get_screenshot_as_png(),
