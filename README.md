@@ -9,11 +9,16 @@ https://skyprozheka-tester.yonote.ru/share/927339df-08f8-4026-9af0-e43b832fff0d/
 1. Клонируйте репозиторий:
    ```bash
    git clone <repository-url>
-   cd 
+   cd https://github.com/ZhekaTester/DiploM_Final
    
-установите зависимости: pip install -r requirements.txt
+Установите зависимости: pip install -r requirements.txt
+
 Запуск всех тестов pytest: DiploM_Final/tests
-Запуск API тестов pytest: DiploM_Final/tests/test_api.py   
+
+Запуск API тестов pytest: DiploM_Final/tests/test_api.py
+
 Запуск Ui тестов pytest pytest: DiploM_Final/tests/test_ui.py
+
 Запуск отчетов ALLURE  pytest: --alluredir=allure-results
+
 Просмотр результатов: allure serve allure-results
