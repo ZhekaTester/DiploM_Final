@@ -146,11 +146,6 @@ def test_change_city_to_spb(driver):
                       attachment_type=allure.attachment_type.PNG)
         raise e
 
-    except Exception as e:
-        allure.attach(driver.get_screenshot_as_png(),
-                      name="city_verification_failed",
-                      attachment_type=allure.attachment_type.PNG)
-        raise e  # Перебрасываем исключение дальше для корректного завершения теста
 
 @allure.feature("Сертификаты")
 @allure.story("Выбор и покупка сертификата")
